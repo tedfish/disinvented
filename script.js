@@ -241,11 +241,65 @@ function updateFlowingLogo() {
         flowingViewportBg.style.borderRadius = borderRadius;
 
     } else {
-        // Default fallback - reset specific classes
-        flowingLogoContainer.className = 'flowing-logo-container';
+        // Check if we are in the last section near the "dis invented" title
+        const lastSection = document.querySelector('.section-8');
+        // We target the specific span to get the exact text dimensions for perfect overlay
+        const originTitle = lastSection?.querySelector('.static-logo');
 
-        flowingLogoContainer.style.opacity = '0.3';
-        flowingViewportBg.style.opacity = '0.3';
+        let headerTarget = null;
+
+        if (originTitle) {
+            const rect = originTitle.getBoundingClientRect();
+            // Check if title is roughly in view
+            if (rect.top < viewportHeight && rect.bottom > 0) {
+                const distanceToCenter = Math.abs((rect.top + rect.height / 2) - (viewportHeight / 2));
+                if (distanceToCenter < viewportHeight * 0.4) {
+                    headerTarget = originTitle;
+                }
+            }
+        }
+
+        if (headerTarget) {
+            const rect = headerTarget.getBoundingClientRect();
+            // Force center X to be viewport center for better aesthetics
+            const centerX = window.innerWidth / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Calculate scale to match the title width
+            const logoWidth = flowingLogo.offsetWidth;
+            // The title text "dis invented" is roughly the width we want.
+            // Since font-family might be slightly different, matching width is best approximation.
+            const targetScale = (rect.width * 1.0) / logoWidth;
+
+            flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
+            flowingLogoContainer.style.top = `${centerY}px`;
+            flowingLogoContainer.style.left = `${centerX}px`;
+            flowingLogoContainer.style.opacity = '1';
+
+            // Make the static text transparent so we don't see double
+            // The flowing logo BECOMES the title
+            headerTarget.style.opacity = '0';
+
+            // Apply origin styling
+            flowingLogoContainer.className = 'flowing-logo-container connected-origin';
+
+            // Hide viewport background
+            flowingViewportBg.style.opacity = '0';
+
+        } else {
+            // Default fallback
+            flowingLogoContainer.className = 'flowing-logo-container';
+            flowingLogoContainer.style.opacity = '0.3';
+            flowingLogoContainer.style.top = '50%';
+            flowingLogoContainer.style.left = '50%';
+            // Reset transforms if needed or let CSS transition handle it, 
+            // but we need to ensure scale is reset to something reasonable if we want it to drift
+            // Actually, best to just let it drift near center if no device
+            flowingViewportBg.style.opacity = '0.3';
+
+            // Reset title opacity if we leave it
+            if (originTitle) originTitle.style.opacity = '1';
+        }
     }
 }
 

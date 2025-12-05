@@ -260,6 +260,36 @@ body {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
 }
 
+.static-logo {
+    display: inline-block;
+    font-weight: 800;
+    letter-spacing: -0.08em;
+    text-transform: lowercase;
+}
+
+.static-logo .dis {
+    font-weight: 800;
+    /* Match connected-origin style for seamless transition */
+    background: linear-gradient(to bottom, #fff 0%, #ffaa00 50%, #ff4500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Fallback for browsers */
+    color: transparent;
+    /* Standard clear */
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(255, 100, 50, 0.4));
+}
+
+.static-logo .invented {
+    font-weight: 800;
+    background: linear-gradient(to bottom, #ffffff 0%, #aaaaaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-clip: text;
+    opacity: 0.8;
+}
+
 /* Theme-specific Logo Styles (moved from JS) */
 /* B&W TV Style */
 .connected-bw .dis {
@@ -338,6 +368,30 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     opacity: 0.8;
+}
+
+/* Origin/Title Style (The "Wow" moment) */
+.connected-origin .dis {
+    filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.8)) drop-shadow(0 0 40px rgba(255, 50, 0, 0.4));
+    background: linear-gradient(to bottom, #fff 0%, #ffaa00 50%, #ff4500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 1;
+    transform: scale(1.1);
+    /* Slight pop */
+    transition: all 0.5s ease;
+}
+
+.connected-origin .invented {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    background: linear-gradient(to bottom, #ffffff 0%, #aaaaaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 1;
+    letter-spacing: 0;
+    /* Reset spacing to look like normal text */
 }
 
 /* Theater Style */
@@ -996,6 +1050,16 @@ body {
     background: repeating-linear-gradient(45deg, transparent 0px, rgba(0, 0, 0, 0.05) 1px, transparent 2px, transparent 40px),
         repeating-linear-gradient(-45deg, transparent 0px, rgba(0, 0, 0, 0.03) 1px, transparent 2px, transparent 60px);
     opacity: 0.5;
+}
+
+/* Make the specific origin title massive so the logo stays prominent */
+.section-8 .section-title-main {
+    font-size: clamp(6rem, 20vw, 15rem);
+    margin: 2rem 0;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 /* CTA Button */
