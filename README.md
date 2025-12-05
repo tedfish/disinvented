@@ -56,6 +56,19 @@ disinvented/
 └── README.md       # This file
 ```
 
+## Architecture
+
+- **No build process**: This is a static site with no compilation, bundling, or transpilation
+- **No dependencies**: Pure vanilla HTML/CSS/JS with no frameworks or libraries
+- **Cloudflare Pages**: Deployment target with root directory as build output
+- **Responsive design**: Mobile-first approach
+
+### Styling System
+- Uses system font stack for performance
+- Gradient background: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`
+- Primary brand color: `#667eea`
+- Responsive breakpoint at 768px
+
 ## Customization
 
 - Edit `index.html` to change the content
