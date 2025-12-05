@@ -414,8 +414,8 @@ body {
 /* Scroll Hint */
 .scroll-hint {
     position: absolute;
-    bottom: 40vh;
-    /* Moved to middle-ish */
+    bottom: 130px;
+    /* Moved to bottom, above scroll bar */
     left: 50%;
     transform: translateX(-50%);
     color: rgba(255, 255, 255, 0.8);
