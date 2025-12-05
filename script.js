@@ -42,10 +42,10 @@ function scrollToSection(index) {
 function handleWheel(e) {
     e.preventDefault();
     if (isScrolling) return;
-    
+
     wheelDelta += e.deltaY;
     clearTimeout(wheelTimeout);
-    
+
     wheelTimeout = setTimeout(() => {
         if (Math.abs(wheelDelta) > WHEEL_THRESHOLD) {
             isScrolling = true;
@@ -67,10 +67,10 @@ function handleTouchStart(e) {
 
 function handleTouchEnd(e) {
     if (isScrolling) return;
-    
+
     touchEndY = e.changedTouches[0].clientY;
     const diff = touchStartY - touchEndY;
-    
+
     if (Math.abs(diff) > SWIPE_THRESHOLD) {
         isScrolling = true;
         const direction = diff > 0 ? 1 : -1;
@@ -85,7 +85,7 @@ function handleTouchEnd(e) {
 // Keyboard navigation
 function handleKeydown(e) {
     if (isScrolling) return;
-    
+
     const keyActions = {
         'ArrowDown': () => currentSection < totalSections - 1 && scrollToSection(currentSection + 1),
         'PageDown': () => currentSection < totalSections - 1 && scrollToSection(currentSection + 1),
@@ -95,7 +95,7 @@ function handleKeydown(e) {
         'Home': () => scrollToSection(0),
         'End': () => scrollToSection(totalSections - 1)
     };
-    
+
     const action = keyActions[e.key];
     if (action) {
         e.preventDefault();
@@ -119,20 +119,20 @@ sections.forEach(section => observer.observe(section));
 // Continuous logo and viewport background flow
 function updateFlowingLogo() {
     if (!flowingLogoContainer || !flowingViewportBg) return;
-    
+
     // Get current scroll position
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const viewportHeight = window.innerHeight;
-    
+
     // Section 1: Full screen
     const section1 = document.querySelector('.section-1');
     const section1Top = section1.offsetTop;
     const section1Bottom = section1Top + section1.offsetHeight;
-    
+
     // Calculate which section we're in
     let targetDevice = null;
     let progress = 0;
-    
+
     // Find target device based on scroll position
     const deviceContainers = document.querySelectorAll('.device-container');
     deviceContainers.forEach(container => {
@@ -140,10 +140,10 @@ function updateFlowingLogo() {
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
         const sectionMiddle = sectionTop + (section.offsetHeight / 2);
-        
+
         // Check if we're in or near this section
         const distanceToMiddle = Math.abs(scrollTop + (viewportHeight / 2) - sectionMiddle);
-        
+
         if (distanceToMiddle < viewportHeight * 0.6) {
             const deviceScreen = container.querySelector('.device-screen');
             if (deviceScreen) {
@@ -152,33 +152,33 @@ function updateFlowingLogo() {
             }
         }
     });
-    
+
     // In section 1 - full size overlapping bottom
     if (scrollTop < section1Bottom - viewportHeight / 2) {
         const section1Progress = scrollTop / (section1Bottom - viewportHeight / 2);
         const scale = 1 - (section1Progress * 0.7); // Scale from 1 to 0.3
-        
+
         // Keep at bottom 65% position on first page
         flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
         flowingLogoContainer.style.top = '65%';
         flowingLogoContainer.style.left = '50%';
         flowingLogoContainer.style.opacity = '1';
-        
+
         // Viewport background follows logo
         flowingViewportBg.style.transform = 'translate(0, 0) scale(1)';
         flowingViewportBg.style.opacity = '1';
         flowingViewportBg.style.clipPath = 'none';
         flowingViewportBg.style.borderRadius = '0';
-        
-    // Moving toward a device
+
+        // Moving toward a device
     } else if (targetDevice) {
         const rect = targetDevice.getBoundingClientRect();
-        
+
         // Get border/bezel width from device type first
         const deviceContainer = targetDevice.closest('.device-container');
         let bezelPadding = 0;
         let borderRadius = '0px';
-        
+
         if (deviceContainer) {
             if (deviceContainer.classList.contains('monitor-container')) {
                 bezelPadding = 20; // 20px border
@@ -203,39 +203,39 @@ function updateFlowingLogo() {
                 borderRadius = '0';
             }
         }
-        
+
         // Calculate inner dimensions (accounting for bezel on both sides)
         const innerWidth = rect.width - (bezelPadding * 2);
         const innerHeight = rect.height - (bezelPadding * 2);
         const innerCenterX = rect.left + rect.width / 2;
         const innerCenterY = rect.top + rect.height / 2;
-        
+
         // Calculate logo scale to fit inside device (accounting for bezel)
         const logoWidth = flowingLogo.offsetWidth;
         const targetScale = Math.min((innerWidth * 0.65) / logoWidth, 0.3);
-        
+
         // Position logo inside device screen
         flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
         flowingLogoContainer.style.top = `${innerCenterY}px`;
         flowingLogoContainer.style.left = `${innerCenterX}px`;
         flowingLogoContainer.style.opacity = progress;
-        
+
         // Apply device-specific logo styling
         applyDeviceSpecificLogoStyling(deviceContainer, progress);
-        
+
         // Morph viewport background to fill device screen completely (inside bezel)
         const deviceScaleX = innerWidth / window.innerWidth;
         const deviceScaleY = innerHeight / window.innerHeight;
-        
+
         // Position background to align with device screen center
         const translateX = innerCenterX - window.innerWidth / 2;
         const translateY = innerCenterY - window.innerHeight / 2;
-        
+
         flowingViewportBg.style.transform = `translate(${translateX}px, ${translateY}px) scaleX(${deviceScaleX}) scaleY(${deviceScaleY})`;
         flowingViewportBg.style.transformOrigin = 'center center';
         flowingViewportBg.style.opacity = Math.min(1, progress * 1.2);
         flowingViewportBg.style.borderRadius = borderRadius;
-        
+
     } else {
         // Default fallback
         flowingLogoContainer.style.opacity = '0.3';
@@ -274,7 +274,7 @@ const deviceStyles = {
 // Apply device-specific logo styling
 function applyDeviceSpecificLogoStyling(deviceContainer) {
     if (!deviceContainer || !disSpan || !inventedSpan) return;
-    
+
     const styleKey = Object.keys(deviceStyles).find(key => deviceContainer.classList.contains(key));
     const style = styleKey ? deviceStyles[styleKey] : {
         disFilter: '',
@@ -282,7 +282,7 @@ function applyDeviceSpecificLogoStyling(deviceContainer) {
         disBg: 'linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%)',
         inventedBg: 'linear-gradient(135deg, #e8e8e8 0%, #a8a8a8 100%)'
     };
-    
+
     Object.assign(disSpan.style, {
         filter: style.disFilter,
         background: style.disBg,
@@ -290,7 +290,7 @@ function applyDeviceSpecificLogoStyling(deviceContainer) {
         webkitTextFillColor: 'transparent',
         backgroundClip: 'text'
     });
-    
+
     Object.assign(inventedSpan.style, {
         filter: style.inventedFilter,
         background: style.inventedBg,
@@ -304,20 +304,51 @@ function applyDeviceSpecificLogoStyling(deviceContainer) {
 function updateDeviceVisibility() {
     const viewportHeight = window.innerHeight;
     const deviceContainers = document.querySelectorAll('.device-container');
-    
+
     deviceContainers.forEach(container => {
         const sectionRect = container.closest('.section').getBoundingClientRect();
         const visibilityProgress = Math.max(0, Math.min(1, 1 - (Math.abs(sectionRect.top) / viewportHeight)));
-        
+
         container.style.transform = visibilityProgress > 0.2 ? `scale(${0.85 + visibilityProgress * 0.15})` : 'scale(0.85)';
         container.style.opacity = visibilityProgress > 0.2 ? Math.min(1, visibilityProgress * 1.2) : 0;
     });
+}
+
+// Scroll Hint Logic
+const scrollHint = document.querySelector('.scroll-hint');
+if (scrollHint) {
+    scrollHint.addEventListener('click', () => scrollToSection(1));
+}
+
+function updateScrollHint() {
+    if (!scrollHint) return;
+    if (currentSection === 0) {
+        scrollHint.style.opacity = '1';
+        scrollHint.style.pointerEvents = 'auto';
+    } else {
+        scrollHint.style.opacity = '0';
+        scrollHint.style.pointerEvents = 'none';
+    }
 }
 
 // Combined update function
 function updateAllAnimations() {
     updateFlowingLogo();
     updateDeviceVisibility();
+    updateScrollHint();
+}
+
+// Optimized Animation Loop
+let ticking = false;
+
+function onScroll() {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            updateAllAnimations();
+            ticking = false;
+        });
+        ticking = true;
+    }
 }
 
 // Event listeners
@@ -325,8 +356,8 @@ window.addEventListener('wheel', handleWheel, { passive: false });
 window.addEventListener('touchstart', handleTouchStart, { passive: true });
 window.addEventListener('touchend', handleTouchEnd, { passive: true });
 window.addEventListener('keydown', handleKeydown);
-window.addEventListener('scroll', updateAllAnimations, { passive: true });
-window.addEventListener('resize', updateAllAnimations, { passive: true });
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', onScroll, { passive: true });
 
 // Dot navigation
 dots.forEach(dot => {
@@ -336,4 +367,3 @@ dots.forEach(dot => {
 // Initialize
 scrollToSection(0);
 updateAllAnimations();
-setInterval(updateAllAnimations, UPDATE_INTERVAL);
