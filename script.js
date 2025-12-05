@@ -220,8 +220,8 @@ function updateFlowingLogo() {
         flowingLogoContainer.style.left = `${innerCenterX}px`;
         flowingLogoContainer.style.opacity = progress;
 
-        // Apply device-specific logo styling
-        applyDeviceSpecificLogoStyling(deviceContainer, progress);
+        // Apply device-specific logo styling via CSS classes
+        applyDeviceSpecificLogoStyling(deviceContainer);
 
         // Morph viewport background to fill device screen completely (inside bezel)
         const deviceScaleX = innerWidth / window.innerWidth;
@@ -237,67 +237,30 @@ function updateFlowingLogo() {
         flowingViewportBg.style.borderRadius = borderRadius;
 
     } else {
-        // Default fallback
+        // Default fallback - reset specific classes
+        flowingLogoContainer.className = 'flowing-logo-container';
+
         flowingLogoContainer.style.opacity = '0.3';
         flowingViewportBg.style.opacity = '0.3';
     }
 }
 
-// Device styling configurations
-const deviceStyles = {
-    'bw-container': {
-        disFilter: 'grayscale(1) blur(0.5px) opacity(0.5)',
-        inventedFilter: 'grayscale(1) blur(0.5px)',
-        disBg: 'linear-gradient(135deg, #888888 0%, #666666 100%)',
-        inventedBg: 'linear-gradient(135deg, #cccccc 0%, #999999 100%)'
-    },
-    'crt-container': {
-        disFilter: 'blur(0.3px) opacity(0.5)',
-        inventedFilter: 'blur(0.3px)',
-        disBg: 'linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%)',
-        inventedBg: 'linear-gradient(135deg, #e8e8e8 0%, #a8a8a8 100%)'
-    },
-    'frame-container': {
-        disFilter: 'sepia(0.4) contrast(0.9) opacity(0.5)',
-        inventedFilter: 'sepia(0.4) contrast(0.9)',
-        disBg: 'linear-gradient(135deg, #8b7355 0%, #6a5a4a 100%)',
-        inventedBg: 'linear-gradient(135deg, #c9b8a3 0%, #a89080 100%)'
-    },
-    'cave-container': {
-        disFilter: 'opacity(0.4) contrast(1.5)',
-        inventedFilter: 'opacity(0.6) contrast(1.5)',
-        disBg: 'linear-gradient(135deg, #6a5a4a 0%, #4a3a2a 100%)',
-        inventedBg: 'linear-gradient(135deg, #8b6f47 0%, #6a5a3a 100%)'
-    }
-};
-
 // Apply device-specific logo styling
 function applyDeviceSpecificLogoStyling(deviceContainer) {
-    if (!deviceContainer || !disSpan || !inventedSpan) return;
+    if (!deviceContainer) return;
 
-    const styleKey = Object.keys(deviceStyles).find(key => deviceContainer.classList.contains(key));
-    const style = styleKey ? deviceStyles[styleKey] : {
-        disFilter: '',
-        inventedFilter: '',
-        disBg: 'linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%)',
-        inventedBg: 'linear-gradient(135deg, #e8e8e8 0%, #a8a8a8 100%)'
-    };
+    // reset base class
+    flowingLogoContainer.classList.remove('connected-bw', 'connected-crt', 'connected-frame', 'connected-cave');
 
-    Object.assign(disSpan.style, {
-        filter: style.disFilter,
-        background: style.disBg,
-        webkitBackgroundClip: 'text',
-        webkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-    });
-
-    Object.assign(inventedSpan.style, {
-        filter: style.inventedFilter,
-        background: style.inventedBg,
-        webkitBackgroundClip: 'text',
-        webkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-    });
+    if (deviceContainer.classList.contains('bw-container')) {
+        flowingLogoContainer.classList.add('connected-bw');
+    } else if (deviceContainer.classList.contains('crt-container')) {
+        flowingLogoContainer.classList.add('connected-crt');
+    } else if (deviceContainer.classList.contains('frame-container')) {
+        flowingLogoContainer.classList.add('connected-frame');
+    } else if (deviceContainer.classList.contains('cave-container')) {
+        flowingLogoContainer.classList.add('connected-cave');
+    }
 }
 
 // Update device visibility based on scroll
