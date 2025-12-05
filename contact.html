@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Us - disinvented</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav-container">
+        <div class="nav-logo"></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Index</a>
+            <a href="work.html" class="nav-link">Work</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link active">Contact</a>
+        </div>
+    </nav>
+
+    <div class="standard-page">
+        <div class="standard-content">
+            <header class="page-header">
+                <h1 class="page-title">Signal Us</h1>
+                <p class="page-subtitle">Analog signals welcome. No bots. Just us. Send a frequency to open a channel.
+                </p>
+            </header>
+
+            <form class="contact-form" action="#" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Designation (Name)</label>
+                    <input type="text" class="form-input" required placeholder="e.g. John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Frequency (Email)</label>
+                    <input type="email" class="form-input" required placeholder="e.g. john@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Transmission</label>
+                    <textarea class="form-textarea" required placeholder="Type your message..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Broadcast</button>
+            </form>
+
+            <footer class="simple-footer">
+                © DISINVENTED
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

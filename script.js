@@ -158,11 +158,15 @@ function updateFlowingLogo() {
         const section1Progress = scrollTop / (section1Bottom - viewportHeight / 2);
         const scale = 1 - (section1Progress * 0.7); // Scale from 1 to 0.3
 
+        // Calculate opacity: Start at 0.1, fade to 1 as we scroll down
+        // We want it to be fully opaque by the time it is about to enter the device (end of section 1)
+        const opacity = 0.1 + (section1Progress * 0.9);
+
         // Keep at bottom 65% position on first page
         flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
         flowingLogoContainer.style.top = '65%';
         flowingLogoContainer.style.left = '50%';
-        flowingLogoContainer.style.opacity = '1';
+        flowingLogoContainer.style.opacity = Math.min(1, Math.max(0.1, opacity));
 
         // Viewport background follows logo
         flowingViewportBg.style.transform = 'translate(0, 0) scale(1)';
@@ -250,7 +254,7 @@ function applyDeviceSpecificLogoStyling(deviceContainer) {
     if (!deviceContainer) return;
 
     // reset base class
-    flowingLogoContainer.classList.remove('connected-bw', 'connected-crt', 'connected-frame', 'connected-cave');
+    flowingLogoContainer.classList.remove('connected-bw', 'connected-crt', 'connected-frame', 'connected-cave', 'connected-theater');
 
     if (deviceContainer.classList.contains('bw-container')) {
         flowingLogoContainer.classList.add('connected-bw');
@@ -260,6 +264,8 @@ function applyDeviceSpecificLogoStyling(deviceContainer) {
         flowingLogoContainer.classList.add('connected-frame');
     } else if (deviceContainer.classList.contains('cave-container')) {
         flowingLogoContainer.classList.add('connected-cave');
+    } else if (deviceContainer.classList.contains('theater-container')) {
+        flowingLogoContainer.classList.add('connected-theater');
     }
 }
 
