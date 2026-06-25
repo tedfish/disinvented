@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+.venv/
 
 # Build outputs
 dist/
@@ -8,6 +9,8 @@ dist/
 # Environment variables
 .env
 .env.local
+.dev.vars
+.dev.vars.*
 
 # OS files
 .DS_Store
@@ -19,4 +22,3 @@ Thumbs.db
 
 # Cloudflare
 .wrangler/
-wrangler.toml

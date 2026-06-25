@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Road Reliquary by disinvented. A Tesla trip relic generator that turns route, charge, weather, and cabin telemetry into a single cinematic artifact.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Road Reliquary - disinvented">
+    <meta property="og:description"
+        content="A Tesla trip relic generator that turns route, charge, weather, and cabin telemetry into a single cinematic artifact.">
+    <meta property="og:image" content="https://disinvented.com/screen_cave.png">
+    <meta property="og:url" content="https://disinvented.com/road-reliquary.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Road Reliquary - disinvented">
+    <meta name="twitter:description"
+        content="A Tesla trip relic generator that turns route, charge, weather, and cabin telemetry into a single cinematic artifact.">
+    <meta name="twitter:image" content="https://disinvented.com/screen_cave.png">
+
+    <title>Road Reliquary - disinvented</title>
+    <link rel="canonical" href="https://disinvented.com/road-reliquary.html">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="nav-container" aria-label="Primary">
+        <div class="nav-logo"><a href="index.html" aria-label="disinvented home">disinvented</a></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Index</a>
+            <a href="work.html" class="nav-link active" aria-current="page">Work</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <div class="standard-page project-page">
+            <div class="standard-content project-shell">
+                <header class="page-header project-header">
+                    <p class="project-eyebrow">2026 / Tesla Fleet API / Demo Mode</p>
+                    <h1 class="page-title">Road Reliquary</h1>
+                    <p class="page-subtitle">A Tesla trip relic generator that refuses the dashboard. It takes route,
+                        charge, weather, and cabin telemetry and compresses a drive into one artifact: part road diary,
+                        part battery elegy, part machine memory.</p>
+                    <p class="project-source-line" id="project-source-line">Opening the relic vault.</p>
+                </header>
+
+                <section class="project-hero" aria-labelledby="prototype-heading">
+                    <div>
+                        <p class="project-kicker">The premise</p>
+                        <h2 id="prototype-heading" class="project-section-title">One drive. One object.</h2>
+                        <p class="project-copy">A normal car app gives you charts, numbers, and too much of both. Road
+                            Reliquary waits until the trip is over, then produces a single relic. It could be a poster,
+                            a print, a note to your future self, or a quiet screen you keep for years.</p>
+                    </div>
+                    <div class="project-note">
+                        <p class="project-note-title">Live integration note</p>
+                        <p>This prototype renders the artifact layer using sample telemetry. A production version would
+                            keep Tesla OAuth and Fleet API requests on a secure server, then send only the distilled trip
+                            record to this page.</p>
+                        <p class="project-note-status" id="project-note-status">If the API is unavailable, the page falls back to seeded relics so the interface still works offline.</p>
+                    </div>
+                </section>
+
+                <section class="project-grid" aria-label="Road Reliquary demo">
+                    <aside class="telemetry-panel">
+                        <div class="panel-header">
+                            <p class="project-kicker">Trip archive</p>
+                            <h2 class="project-section-title">Select a drive</h2>
+                        </div>
+
+                        <div class="trip-selector" role="tablist" aria-label="Sample Tesla trips">
+                            <button class="trip-option active" id="trip-dawn" data-trip="dawn" type="button"
+                                role="tab" aria-selected="true" aria-controls="artifact-panel">
+                                <span class="trip-label">Coastal Departure</span>
+                                <span class="trip-meta">Fog, 06:12, 312 mi</span>
+                            </button>
+                            <button class="trip-option" id="trip-desert" data-trip="desert" type="button"
+                                role="tab" aria-selected="false" aria-controls="artifact-panel">
+                                <span class="trip-label">Heat Mirage Run</span>
+                                <span class="trip-meta">Sun, 14:08, 187 mi</span>
+                            </button>
+                            <button class="trip-option" id="trip-midnight" data-trip="midnight" type="button"
+                                role="tab" aria-selected="false" aria-controls="artifact-panel">
+                                <span class="trip-label">Midnight Return</span>
+                                <span class="trip-meta">Rain, 22:41, 94 mi</span>
+                            </button>
+                        </div>
+
+                        <button class="submit-btn relic-trigger" id="generate-relic" type="button">Rematerialize relic</button>
+                        <p class="telemetry-status" id="telemetry-status">Loading persisted relics.</p>
+
+                        <div class="telemetry-block">
+                            <p class="project-kicker">Input fields</p>
+                            <ul class="telemetry-list">
+                                <li><span>Drive state</span><strong id="telemetry-distance">312 mi</strong></li>
+                                <li><span>Charge curve</span><strong id="telemetry-charge">88% to 24%</strong></li>
+                                <li><span>Cabin / outside</span><strong id="telemetry-climate">68F / 54F</strong></li>
+                                <li><span>Quietest minute</span><strong id="telemetry-quiet">06:47</strong></li>
+                                <li><span>Route texture</span><strong id="telemetry-route">coast, grade, charger</strong></li>
+                            </ul>
+                        </div>
+
+                        <div class="api-strip" aria-label="Tesla API sources">
+                            <span>vehicle_data</span>
+                            <span>drive_state</span>
+                            <span>charge_state</span>
+                            <span>climate_state</span>
+                            <span>weather overlay</span>
+                        </div>
+                    </aside>
+
+                    <section class="artifact-panel" id="artifact-panel" aria-live="polite">
+                        <div class="panel-header">
+                            <p class="project-kicker">Output artifact</p>
+                            <h2 class="project-section-title">The relic</h2>
+                        </div>
+
+                        <article class="artifact-card" id="artifact-card">
+                            <div class="artifact-head">
+                                <p class="artifact-index" id="artifact-index">Reliquary 01</p>
+                                <p class="artifact-date" id="artifact-date">June 25, 2026</p>
+                            </div>
+                            <h3 class="artifact-title" id="artifact-title">The fog kept the world at the shoulder.</h3>
+                            <p class="artifact-subtitle" id="artifact-subtitle">312 miles. One charge stop. The cabin held
+                                at 68F while the coastline disappeared and returned.</p>
+                            <p class="artifact-story" id="artifact-story">You left before the freeway had chosen its voice.
+                                The battery fell in clean deliberate steps. At 06:47 the machine was almost silent,
+                                gliding between fog banks as if the road had been erased and redrawn under the wheels.</p>
+
+                            <div class="artifact-route" aria-hidden="true">
+                                <span class="route-line"></span>
+                                <span class="route-marker start"></span>
+                                <span class="route-marker charge"></span>
+                                <span class="route-marker finish"></span>
+                            </div>
+
+                            <div class="artifact-stats">
+                                <div>
+                                    <span class="stat-label">Battery spent</span>
+                                    <strong id="artifact-battery">64%</strong>
+                                </div>
+                                <div>
+                                    <span class="stat-label">Silence index</span>
+                                    <strong id="artifact-silence">81</strong>
+                                </div>
+                                <div>
+                                    <span class="stat-label">Altitude gained</span>
+                                    <strong id="artifact-altitude">4,200 ft</strong>
+                                </div>
+                            </div>
+
+                            <p class="artifact-footer" id="artifact-footer">Saved as a trip relic instead of a dashboard event log.</p>
+                        </article>
+                    </section>
+                </section>
+
+                <section class="project-detail-grid" aria-label="Project details">
+                    <article class="detail-card">
+                        <p class="project-kicker">Tesla gives</p>
+                        <h2 class="project-section-title">A drive, not a feed</h2>
+                        <p class="project-copy">The useful Tesla payload is small: timestamps, state changes, charge
+                            deltas, climate values, and position. Road Reliquary treats those as raw material, then stops.
+                            No endless charts. No compulsive refresh.</p>
+                    </article>
+
+                    <article class="detail-card">
+                        <p class="project-kicker">The translation</p>
+                        <h2 class="project-section-title">Telemetry becomes narrative</h2>
+                        <p class="project-copy">A route segment becomes composition. A charge stop becomes punctuation.
+                            The quietest minute becomes the emotional center of the artifact. The machine provides facts;
+                            the product decides what deserves memory.</p>
+                    </article>
+
+                    <article class="detail-card">
+                        <p class="project-kicker">Production architecture</p>
+                        <h2 class="project-section-title">Server first, artifact last</h2>
+                        <p class="project-copy">Tesla authentication and live vehicle requests belong behind a server or
+                            worker. The front end should receive a sanitized trip summary, a relic palette, and the final
+                            text blocks. That keeps tokens out of the browser and keeps the interface calm.</p>
+                    </article>
+                </section>
+
+                <section class="setup-shell" aria-labelledby="setup-heading">
+                    <div class="setup-card">
+                        <p class="project-kicker">Connect your Tesla</p>
+                        <h2 class="project-section-title" id="setup-heading">Real setup, less friction</h2>
+                        <p class="project-copy">Use this page to generate the exact `.dev.vars` block for local development,
+                            then submit a live trip summary to the sync route without dropping to `curl`. Secrets are never
+                            stored in the browser. Helper fields like weather and route texture can be remembered locally.</p>
+
+                        <div class="setup-grid">
+                            <article class="detail-card setup-panel">
+                                <h3 class="setup-title">1. Generate your local secret file</h3>
+                                <p class="setup-copy">Paste the real Tesla access token and vehicle identifier here, then copy
+                                    the generated block into a root-level `.dev.vars` file. Use your VIN or Tesla vehicle `id_s`
+                                    for `TESLA_VEHICLE_TAG`.</p>
+
+                                <form class="setup-form" id="env-helper-form">
+                                    <div class="form-row two-up">
+                                        <div class="form-group">
+                                            <label for="env-sync-token" class="form-label">Sync Token</label>
+                                            <input type="text" id="env-sync-token" class="form-input helper-code"
+                                                placeholder="Long random token">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="env-ingest-token" class="form-label">Ingest Token</label>
+                                            <input type="text" id="env-ingest-token" class="form-input helper-code"
+                                                placeholder="Optional second token">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="env-access-token" class="form-label">Tesla Access Token</label>
+                                        <textarea id="env-access-token" class="form-textarea helper-code compact-textarea"
+                                            placeholder="Paste the real Tesla OAuth access token"></textarea>
+                                    </div>
+
+                                    <div class="form-row two-up">
+                                        <div class="form-group">
+                                            <label for="env-vehicle-tag" class="form-label">Vehicle Tag</label>
+                                            <input type="text" id="env-vehicle-tag" class="form-input helper-code persistent-field"
+                                                data-persist-key="vehicleTag" placeholder="VIN or Tesla id_s">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="env-api-base" class="form-label">Tesla API Base URL</label>
+                                            <input type="text" id="env-api-base" class="form-input helper-code"
+                                                value="https://fleet-api.prd.na.vn.cloud.tesla.com">
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="setup-actions">
+                                    <button type="button" class="submit-btn secondary-btn" id="copy-env-block">Copy .dev.vars</button>
+                                </div>
+
+                                <pre class="env-preview" id="env-preview">Fill in the fields above to generate a .dev.vars block.</pre>
+                                <div class="form-status" id="env-status" role="status" aria-live="polite"></div>
+                            </article>
+
+                            <article class="detail-card setup-panel">
+                                <h3 class="setup-title">2. Sync a real drive</h3>
+                                <p class="setup-copy">Once `.dev.vars` is in place and the site is running via Wrangler,
+                                    submit the trip-level fields Tesla cannot infer from a single snapshot. The sync route
+                                    will fetch live `vehicle_data` on the server.</p>
+
+                                <form class="setup-form" id="sync-form">
+                                    <div class="form-row two-up">
+                                        <div class="form-group">
+                                            <label for="sync-token" class="form-label">Sync Token</label>
+                                            <input type="password" id="sync-token" class="form-input helper-code"
+                                                placeholder="Matches RELIQUARY_SYNC_TOKEN">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-label" class="form-label">Trip Label</label>
+                                            <input type="text" id="sync-label" class="form-input persistent-field"
+                                                data-persist-key="label" placeholder="Evening Return" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row two-up">
+                                        <div class="form-group">
+                                            <label for="sync-started-at" class="form-label">Started At</label>
+                                            <input type="datetime-local" id="sync-started-at" class="form-input persistent-field"
+                                                data-persist-key="startedAt">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-weather" class="form-label">Weather</label>
+                                            <input type="text" id="sync-weather" class="form-input persistent-field"
+                                                data-persist-key="weather" placeholder="Fog" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row three-up">
+                                        <div class="form-group">
+                                            <label for="sync-distance" class="form-label">Distance Miles</label>
+                                            <input type="number" id="sync-distance" class="form-input persistent-field"
+                                                data-persist-key="distanceMiles" min="1" step="1" placeholder="241" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-battery-start" class="form-label">Battery Start %</label>
+                                            <input type="number" id="sync-battery-start" class="form-input persistent-field"
+                                                data-persist-key="batteryStartPercent" min="0" max="100" step="1" placeholder="92" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-charge-stops" class="form-label">Charge Stops</label>
+                                            <input type="number" id="sync-charge-stops" class="form-input persistent-field"
+                                                data-persist-key="chargeStops" min="0" step="1" placeholder="1">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row three-up">
+                                        <div class="form-group">
+                                            <label for="sync-quiet-minute" class="form-label">Quietest Minute</label>
+                                            <input type="time" id="sync-quiet-minute" class="form-input persistent-field"
+                                                data-persist-key="quietMinute" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-silent-minutes" class="form-label">Silent Minutes</label>
+                                            <input type="number" id="sync-silent-minutes" class="form-input persistent-field"
+                                                data-persist-key="silentMinutes" min="0" step="1" placeholder="129" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-duration" class="form-label">Duration Minutes</label>
+                                            <input type="number" id="sync-duration" class="form-input persistent-field"
+                                                data-persist-key="durationMinutes" min="1" step="1" placeholder="298" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row two-up">
+                                        <div class="form-group">
+                                            <label for="sync-route" class="form-label">Route Texture</label>
+                                            <input type="text" id="sync-route" class="form-input persistent-field"
+                                                data-persist-key="routeTexture" placeholder="pine, grade, dusk charger" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sync-altitude" class="form-label">Altitude Gain Ft</label>
+                                            <input type="number" id="sync-altitude" class="form-input persistent-field"
+                                                data-persist-key="altitudeGainFt" min="0" step="1" placeholder="5300">
+                                        </div>
+                                    </div>
+
+                                    <div class="setup-actions split-actions">
+                                        <button type="button" class="submit-btn secondary-btn" id="fill-now">Use current time</button>
+                                        <button type="submit" class="submit-btn" id="sync-submit">Sync live Tesla drive</button>
+                                    </div>
+
+                                    <p class="setup-inline-note" id="sync-readiness-note">Checking local Tesla setup.</p>
+                                    <div class="form-status" id="sync-status" role="status" aria-live="polite"></div>
+                                </form>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <p class="project-return"><a href="work.html">Return to Selected Works</a></p>
+
+                <footer class="simple-footer">
+                    © DISINVENTED
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            const seedTrips = [
+                {
+                    id: 'coastal-departure-2026-06-25',
+                    index: 'Reliquary 01',
+                    date: 'June 25, 2026',
+                    label: 'Coastal Departure',
+                    meta: 'Fog, 06:12, 312 mi',
+                    distance: 312,
+                    batteryStart: 88,
+                    batteryEnd: 24,
+                    cabinTemp: 68,
+                    outsideTemp: 54,
+                    quietMinute: '06:47',
+                    routeTexture: 'coast, grade, charger',
+                    weather: 'Fog',
+                    chargeStops: 1,
+                    altitudeGain: 4200,
+                    silentMinutes: 143,
+                    durationMinutes: 364,
+                    silenceIndex: 81,
+                    batterySpent: 64,
+                    palette: 'linear-gradient(135deg, rgba(229, 233, 238, 0.95) 0%, rgba(113, 137, 154, 0.8) 45%, rgba(12, 21, 31, 1) 100%)',
+                    accent: '#dfe8ef',
+                    title: 'The fog kept the world at the shoulder.',
+                    subtitle: '312 miles. One charge stop. The cabin held at 68F while the coastline disappeared and returned.',
+                    story: 'You left before the freeway had chosen its voice. The battery fell in clean deliberate steps. At 06:47 the machine was almost silent, gliding between fog banks as if the road had been erased and redrawn under the wheels.',
+                    footer: 'Saved as a dawn relic, where range anxiety became weather and distance became memory.'
+                },
+                {
+                    id: 'heat-mirage-run-2026-06-18',
+                    index: 'Reliquary 02',
+                    date: 'June 18, 2026',
+                    label: 'Heat Mirage Run',
+                    meta: 'Sun, 14:08, 187 mi',
+                    distance: 187,
+                    batteryStart: 79,
+                    batteryEnd: 18,
+                    cabinTemp: 70,
+                    outsideTemp: 101,
+                    quietMinute: '15:23',
+                    routeTexture: 'sun, straightaway, supercharger',
+                    weather: 'Sun',
+                    chargeStops: 2,
+                    altitudeGain: 1600,
+                    silentMinutes: 71,
+                    durationMinutes: 201,
+                    silenceIndex: 77,
+                    batterySpent: 61,
+                    palette: 'linear-gradient(135deg, rgba(255, 234, 169, 0.98) 0%, rgba(255, 150, 72, 0.84) 40%, rgba(72, 25, 3, 1) 100%)',
+                    accent: '#ffe5a6',
+                    title: 'Heat bent the horizon before the battery did.',
+                    subtitle: '187 miles. Two charge stops. The cabin stayed temperate while the asphalt radiated back at the glass.',
+                    story: 'The road stretched into a bright mechanical mirage. Charge became pacing, not panic. Each stop felt less like refueling and more like measuring how long a machine and a person can keep their discipline in a field of heat.',
+                    footer: 'Saved as a noon relic, where power loss felt deliberate and sunlight became its own instrument.'
+                },
+                {
+                    id: 'midnight-return-2026-06-02',
+                    index: 'Reliquary 03',
+                    date: 'June 2, 2026',
+                    label: 'Midnight Return',
+                    meta: 'Rain, 22:41, 94 mi',
+                    distance: 94,
+                    batteryStart: 62,
+                    batteryEnd: 31,
+                    cabinTemp: 67,
+                    outsideTemp: 49,
+                    quietMinute: '23:14',
+                    routeTexture: 'rain, bridge, sleeping streets',
+                    weather: 'Rain',
+                    chargeStops: 0,
+                    altitudeGain: 700,
+                    silentMinutes: 54,
+                    durationMinutes: 118,
+                    silenceIndex: 88,
+                    batterySpent: 31,
+                    palette: 'linear-gradient(135deg, rgba(113, 133, 171, 0.95) 0%, rgba(33, 54, 88, 0.88) 42%, rgba(5, 7, 18, 1) 100%)',
+                    accent: '#d5e3ff',
+                    title: 'Rain made the city feel borrowed.',
+                    subtitle: '94 miles. No charge stop. Wet streets, dim bridges, and a cabin that held steady against the weather.',
+                    story: 'The return trip was shorter, but heavier. Water flattened every reflection into a single ribbon. At 23:14 the motor almost disappeared and the loudest thing left was the rain sliding sideways across the glass.',
+                    footer: 'Saved as a night relic, where the machine receded and the weather wrote most of the sentence.'
+                }
+            ];
+
+            const tripSelector = document.querySelector('.trip-selector');
+            const generateButton = document.getElementById('generate-relic');
+            const artifactCard = document.getElementById('artifact-card');
+            const projectEyebrow = document.querySelector('.project-eyebrow');
+            const projectSourceLine = document.getElementById('project-source-line');
+            const projectNoteStatus = document.getElementById('project-note-status');
+            const telemetryStatus = document.getElementById('telemetry-status');
+            const envForm = document.getElementById('env-helper-form');
+            const envPreview = document.getElementById('env-preview');
+            const envStatus = document.getElementById('env-status');
+            const copyEnvButton = document.getElementById('copy-env-block');
+            const syncForm = document.getElementById('sync-form');
+            const syncStatus = document.getElementById('sync-status');
+            const fillNowButton = document.getElementById('fill-now');
+            const syncSubmitButton = document.getElementById('sync-submit');
+            const syncReadinessNote = document.getElementById('sync-readiness-note');
+            const fields = {
+                telemetryDistance: document.getElementById('telemetry-distance'),
+                telemetryCharge: document.getElementById('telemetry-charge'),
+                telemetryClimate: document.getElementById('telemetry-climate'),
+                telemetryQuiet: document.getElementById('telemetry-quiet'),
+                telemetryRoute: document.getElementById('telemetry-route'),
+                artifactIndex: document.getElementById('artifact-index'),
+                artifactDate: document.getElementById('artifact-date'),
+                artifactTitle: document.getElementById('artifact-title'),
+                artifactSubtitle: document.getElementById('artifact-subtitle'),
+                artifactStory: document.getElementById('artifact-story'),
+                artifactBattery: document.getElementById('artifact-battery'),
+                artifactSilence: document.getElementById('artifact-silence'),
+                artifactAltitude: document.getElementById('artifact-altitude'),
+                artifactFooter: document.getElementById('artifact-footer')
+            };
+            const storageKey = 'road-reliquary-setup';
+
+            let trips = seedTrips.slice();
+            let activeTrip = trips[0] ? trips[0].id : null;
+
+            function setStatus(node, message, type) {
+                if (!node) {
+                    return;
+                }
+                node.textContent = message;
+                node.classList.add('visible');
+                node.classList.remove('status-error', 'status-success');
+                if (type === 'error') {
+                    node.classList.add('status-error');
+                }
+                if (type === 'success') {
+                    node.classList.add('status-success');
+                }
+            }
+
+            function clearStatus(node) {
+                if (!node) {
+                    return;
+                }
+                node.textContent = '';
+                node.classList.remove('visible', 'status-error', 'status-success');
+            }
+
+            function readPersistedSetup() {
+                try {
+                    return JSON.parse(window.localStorage.getItem(storageKey) || '{}');
+                } catch {
+                    return {};
+                }
+            }
+
+            function persistSetupField(key, value) {
+                const nextState = readPersistedSetup();
+                nextState[key] = value;
+                window.localStorage.setItem(storageKey, JSON.stringify(nextState));
+            }
+
+            function hydratePersistedFields() {
+                const persisted = readPersistedSetup();
+                document.querySelectorAll('.persistent-field').forEach((field) => {
+                    const key = field.dataset.persistKey;
+                    if (!key) {
+                        return;
+                    }
+                    if (persisted[key]) {
+                        field.value = persisted[key];
+                    }
+                    field.addEventListener('input', function () {
+                        persistSetupField(key, this.value);
+                    });
+                });
+            }
+
+            function formatDateTimeLocal(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${year}-${month}-${day}T${hours}:${minutes}`;
+            }
+
+            function toIsoDate(value) {
+                if (!value) {
+                    return undefined;
+                }
+                const date = new Date(value);
+                if (Number.isNaN(date.getTime())) {
+                    return undefined;
+                }
+                return date.toISOString();
+            }
+
+            function getEnvValues() {
+                return {
+                    syncToken: document.getElementById('env-sync-token')?.value.trim() || '',
+                    ingestToken: document.getElementById('env-ingest-token')?.value.trim() || '',
+                    accessToken: document.getElementById('env-access-token')?.value.trim() || '',
+                    vehicleTag: document.getElementById('env-vehicle-tag')?.value.trim() || '',
+                    apiBase: document.getElementById('env-api-base')?.value.trim() || 'https://fleet-api.prd.na.vn.cloud.tesla.com'
+                };
+            }
+
+            function buildEnvPreview() {
+                const values = getEnvValues();
+                const ingestToken = values.ingestToken || values.syncToken || 'replace-with-a-long-random-token';
+                const syncToken = values.syncToken || values.ingestToken || 'replace-with-a-second-long-random-token';
+                const accessToken = values.accessToken || 'replace-with-a-tesla-oauth-access-token';
+                const vehicleTag = values.vehicleTag || 'replace-with-your-vin-or-vehicle-id';
+                const apiBase = values.apiBase || 'https://fleet-api.prd.na.vn.cloud.tesla.com';
+
+                return [
+                    `RELIQUARY_INGEST_TOKEN=${ingestToken}`,
+                    `RELIQUARY_SYNC_TOKEN=${syncToken}`,
+                    `TESLA_ACCESS_TOKEN=${accessToken}`,
+                    `TESLA_VEHICLE_TAG=${vehicleTag}`,
+                    `TESLA_API_BASE_URL=${apiBase}`
+                ].join('\n');
+            }
+
+            function renderEnvPreview() {
+                if (!envPreview) {
+                    return;
+                }
+                envPreview.textContent = buildEnvPreview();
+            }
+
+            function bindEnvHelper() {
+                if (!envForm) {
+                    return;
+                }
+                envForm.addEventListener('input', function () {
+                    renderEnvPreview();
+                    clearStatus(envStatus);
+                });
+
+                if (copyEnvButton) {
+                    copyEnvButton.addEventListener('click', async function () {
+                        try {
+                            await navigator.clipboard.writeText(buildEnvPreview());
+                            setStatus(envStatus, 'Copied a ready-to-paste .dev.vars block. Secrets were not stored in the browser.', 'success');
+                        } catch {
+                            setStatus(envStatus, 'Could not access the clipboard. Copy the preview block manually.', 'error');
+                        }
+                    });
+                }
+
+                renderEnvPreview();
+            }
+
+            function readSyncPayload() {
+                const payload = {
+                    label: document.getElementById('sync-label')?.value.trim(),
+                    startedAt: toIsoDate(document.getElementById('sync-started-at')?.value),
+                    distanceMiles: Number(document.getElementById('sync-distance')?.value),
+                    batteryStartPercent: Number(document.getElementById('sync-battery-start')?.value),
+                    quietMinute: document.getElementById('sync-quiet-minute')?.value,
+                    routeTexture: document.getElementById('sync-route')?.value.trim(),
+                    weather: document.getElementById('sync-weather')?.value.trim(),
+                    chargeStops: document.getElementById('sync-charge-stops')?.value ? Number(document.getElementById('sync-charge-stops').value) : undefined,
+                    altitudeGainFt: document.getElementById('sync-altitude')?.value ? Number(document.getElementById('sync-altitude').value) : undefined,
+                    silentMinutes: Number(document.getElementById('sync-silent-minutes')?.value),
+                    durationMinutes: Number(document.getElementById('sync-duration')?.value)
+                };
+
+                Object.keys(payload).forEach((key) => {
+                    if (payload[key] === undefined || payload[key] === '') {
+                        delete payload[key];
+                    }
+                });
+
+                return payload;
+            }
+
+            async function refreshTrips() {
+                const loadedTrips = await loadTrips();
+                trips = loadedTrips;
+                activeTrip = trips[0] ? trips[0].id : null;
+                renderTripSelector();
+                if (activeTrip) {
+                    renderTrip(activeTrip);
+                }
+            }
+
+            function bindSyncHelper() {
+                if (!syncForm) {
+                    return;
+                }
+
+                if (fillNowButton) {
+                    fillNowButton.addEventListener('click', function () {
+                        const startedAtField = document.getElementById('sync-started-at');
+                        if (startedAtField && !startedAtField.value) {
+                            startedAtField.value = formatDateTimeLocal(new Date());
+                            persistSetupField('startedAt', startedAtField.value);
+                        }
+                    });
+                }
+
+                syncForm.addEventListener('submit', async function (event) {
+                    event.preventDefault();
+                    clearStatus(syncStatus);
+
+                    if (window.location.protocol === 'file:') {
+                        setStatus(syncStatus, 'Serve this page with `npx wrangler pages dev .` before attempting a live sync.', 'error');
+                        return;
+                    }
+
+                    const syncToken = document.getElementById('sync-token')?.value.trim();
+                    if (!syncToken) {
+                        setStatus(syncStatus, 'Enter the sync token from your .dev.vars or Cloudflare environment.', 'error');
+                        return;
+                    }
+
+                    const payload = readSyncPayload();
+
+                    try {
+                        const response = await fetch('/api/relics/sync', {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json',
+                                'authorization': `Bearer ${syncToken}`
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        if (!response.ok) {
+                            throw new Error(result.error || `Sync failed with ${response.status}`);
+                        }
+
+                        await refreshTrips();
+                        setStatus(syncStatus, `Synced ${result.relic.label}. The new Tesla-backed relic is now at the top of the archive.`, 'success');
+                        syncForm.reset();
+                        hydratePersistedFields();
+                        renderEnvPreview();
+                    } catch (error) {
+                        setStatus(syncStatus, error instanceof Error ? error.message : 'Unable to sync the trip.', 'error');
+                    }
+                });
+            }
+
+            async function loadSyncReadiness() {
+                if (!syncReadinessNote || !syncSubmitButton || window.location.protocol === 'file:') {
+                    if (syncReadinessNote) {
+                        syncReadinessNote.textContent = 'Local file mode cannot reach /api/relics/sync. Serve this page with Wrangler first.';
+                    }
+                    if (syncSubmitButton) {
+                        syncSubmitButton.disabled = true;
+                    }
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/relics/sync', {
+                        headers: {
+                            'accept': 'application/json'
+                        }
+                    });
+                    const payload = await response.json();
+                    const config = payload.config || {};
+
+                    if (config.teslaApiReady) {
+                        syncReadinessNote.textContent = 'Tesla API credentials are configured on the server. This form can sync a real drive.';
+                        syncSubmitButton.disabled = false;
+                        return;
+                    }
+
+                    const missing = Array.isArray(config.missing) ? config.missing.join(', ') : 'TESLA_ACCESS_TOKEN, TESLA_VEHICLE_TAG';
+                    syncReadinessNote.textContent = `Add ${missing} to .dev.vars or Cloudflare Pages before syncing a real Tesla drive.`;
+                    syncSubmitButton.disabled = true;
+                } catch {
+                    syncReadinessNote.textContent = 'Could not inspect /api/relics/sync. Start Wrangler Pages dev or deploy the Pages Functions first.';
+                    syncSubmitButton.disabled = true;
+                }
+            }
+
+            function updateSourceUi(sourceLabel, detailLabel, isLive) {
+                if (projectEyebrow) {
+                    projectEyebrow.textContent = `2026 / Tesla Fleet API / ${sourceLabel}`;
+                }
+                if (projectSourceLine) {
+                    projectSourceLine.textContent = detailLabel;
+                }
+                if (projectNoteStatus) {
+                    projectNoteStatus.textContent = isLive
+                        ? 'Persisted relics are loading from the Pages API. New trips can be posted securely from a server-side Tesla sync process.'
+                        : 'The API is unavailable here, so the page is using seeded relics. Open it through a Pages server to see stored data.';
+                }
+                if (telemetryStatus) {
+                    telemetryStatus.textContent = isLive
+                        ? 'Relic vault connected. These trips came from the backend store.'
+                        : 'Offline seed mode. These relics are bundled with the page.';
+                }
+            }
+
+            function buildTripButton(trip, isActive) {
+                const button = document.createElement('button');
+                button.className = `trip-option${isActive ? ' active' : ''}`;
+                button.type = 'button';
+                button.dataset.trip = trip.id;
+                button.setAttribute('role', 'tab');
+                button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                button.setAttribute('aria-controls', 'artifact-panel');
+                button.innerHTML = `<span class="trip-label">${trip.label}</span><span class="trip-meta">${trip.meta}</span>`;
+                return button;
+            }
+
+            function renderTripSelector() {
+                if (!tripSelector) {
+                    return;
+                }
+                tripSelector.innerHTML = '';
+                trips.forEach((trip) => {
+                    tripSelector.appendChild(buildTripButton(trip, trip.id === activeTrip));
+                });
+            }
+
+            function renderTrip(tripKey) {
+                const trip = trips.find((entry) => entry.id === tripKey);
+                if (!trip) {
+                    return;
+                }
+
+                activeTrip = trip.id;
+                tripSelector.querySelectorAll('.trip-option').forEach((button) => {
+                    const isActive = button.dataset.trip === trip.id;
+                    button.classList.toggle('active', isActive);
+                    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+
+                fields.telemetryDistance.textContent = `${trip.distance} mi`;
+                fields.telemetryCharge.textContent = `${trip.batteryStart}% to ${trip.batteryEnd}%`;
+                fields.telemetryClimate.textContent = `${trip.cabinTemp}F / ${trip.outsideTemp}F`;
+                fields.telemetryQuiet.textContent = trip.quietMinute;
+                fields.telemetryRoute.textContent = trip.routeTexture;
+
+                fields.artifactIndex.textContent = trip.index;
+                fields.artifactDate.textContent = trip.date;
+                fields.artifactTitle.textContent = trip.title;
+                fields.artifactSubtitle.textContent = trip.subtitle;
+                fields.artifactStory.textContent = trip.story;
+                fields.artifactBattery.textContent = `${trip.batterySpent}%`;
+                fields.artifactSilence.textContent = String(trip.silenceIndex);
+                fields.artifactAltitude.textContent = `${trip.altitudeGain.toLocaleString()} ft`;
+                fields.artifactFooter.textContent = trip.footer;
+
+                artifactCard.style.backgroundImage = trip.palette;
+                artifactCard.style.setProperty('--artifact-accent', trip.accent);
+                artifactCard.classList.remove('artifact-refresh');
+                window.requestAnimationFrame(() => {
+                    artifactCard.classList.add('artifact-refresh');
+                });
+            }
+
+            function bindTripSelector() {
+                if (!tripSelector) {
+                    return;
+                }
+                tripSelector.addEventListener('click', function (event) {
+                    const button = event.target.closest('.trip-option');
+                    if (!button) {
+                        return;
+                    }
+                    renderTrip(button.dataset.trip);
+                });
+            }
+
+            async function loadTrips() {
+                if (window.location.protocol === 'file:') {
+                    updateSourceUi('Demo Seed', 'Opened directly from disk. Using bundled relics.', false);
+                    return seedTrips.slice();
+                }
+
+                try {
+                    const response = await fetch('/api/relics', {
+                        headers: {
+                            'accept': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API returned ${response.status}`);
+                    }
+
+                    const payload = await response.json();
+                    if (!payload || !Array.isArray(payload.items) || payload.items.length === 0) {
+                        throw new Error('No relics returned from API');
+                    }
+
+                    const sourceLabel = payload.storage === 'kv' ? 'Relic Vault' : 'Memory Seed';
+                    updateSourceUi(sourceLabel, `Loaded ${payload.count} relics from the Pages API.`, true);
+                    return payload.items;
+                } catch (error) {
+                    updateSourceUi('Demo Seed', 'Could not reach /api/relics. Falling back to bundled relics.', false);
+                    return seedTrips.slice();
+                }
+            }
+
+            if (generateButton) {
+                generateButton.addEventListener('click', function () {
+                    renderTrip(activeTrip);
+                });
+            }
+
+            bindTripSelector();
+            hydratePersistedFields();
+            bindEnvHelper();
+            bindSyncHelper();
+            loadSyncReadiness();
+            refreshTrips();
+        })();
+    </script>
+</body>
+
+</html>

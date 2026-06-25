@@ -4,9 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="disinvented - AI Disinvented. Humans Invented. A reverse journey through display technology, from today's digital screens back to the origin of human storytelling.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="disinvented - AI Disinvented. Humans Invented.">
+    <meta property="og:description"
+        content="A reverse journey through display technology, from today's digital screens back to the origin of human storytelling.">
+    <meta property="og:image" content="https://disinvented.com/screen_cave.png">
+    <meta property="og:url" content="https://disinvented.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="disinvented - AI Disinvented. Humans Invented.">
+    <meta name="twitter:description"
+        content="A reverse journey through display technology, from today's digital screens back to the origin of human storytelling.">
+    <meta name="twitter:image" content="https://disinvented.com/screen_cave.png">
+
     <title>disinvented - AI Disinvented. Humans Invented.</title>
+    <link rel="canonical" href="https://disinvented.com/">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preload" href="screen_monitor.webp" as="image" type="image/webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -15,29 +36,39 @@
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Navigation -->
-    <nav class="nav-container">
-        <div class="nav-logo"></div>
+    <nav class="nav-container" aria-label="Primary">
+        <div class="nav-logo"><a href="index.html" aria-label="disinvented home">disinvented</a></div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link active">Index</a>
+            <a href="index.html" class="nav-link active" aria-current="page">Index</a>
             <a href="work.html" class="nav-link">Work</a>
             <a href="about.html" class="nav-link">About</a>
             <a href="contact.html" class="nav-link">Contact</a>
         </div>
     </nav>
     <div class="scroll-indicator">
-        <div class="indicator-track">
+        <div class="indicator-track" aria-hidden="true">
             <div class="indicator-bar"></div>
         </div>
-        <div class="section-dots">
-            <div class="dot" data-section="0"><span class="dot-label">TODAY</span></div>
-            <div class="dot" data-section="1"><span class="dot-label">2010s</span></div>
-            <div class="dot" data-section="2"><span class="dot-label">2000s</span></div>
-            <div class="dot" data-section="3"><span class="dot-label">1980s</span></div>
-            <div class="dot" data-section="4"><span class="dot-label">1950s</span></div>
-            <div class="dot" data-section="5"><span class="dot-label">1920s</span></div>
-            <div class="dot" data-section="6"><span class="dot-label">1880s</span></div>
-            <div class="dot" data-section="7"><span class="dot-label">ORIGIN</span></div>
+        <div class="section-dots" role="group" aria-label="Section navigation">
+            <button type="button" class="dot" data-section="0" aria-label="Go to section: Today"
+                aria-current="true"><span class="dot-label">TODAY</span></button>
+            <button type="button" class="dot" data-section="1" aria-label="Go to section: 2010s"><span
+                    class="dot-label">2010s</span></button>
+            <button type="button" class="dot" data-section="2" aria-label="Go to section: 2000s"><span
+                    class="dot-label">2000s</span></button>
+            <button type="button" class="dot" data-section="3" aria-label="Go to section: 1980s"><span
+                    class="dot-label">1980s</span></button>
+            <button type="button" class="dot" data-section="4" aria-label="Go to section: 1950s"><span
+                    class="dot-label">1950s</span></button>
+            <button type="button" class="dot" data-section="5" aria-label="Go to section: 1920s"><span
+                    class="dot-label">1920s</span></button>
+            <button type="button" class="dot" data-section="6" aria-label="Go to section: 1880s"><span
+                    class="dot-label">1880s</span></button>
+            <button type="button" class="dot" data-section="7" aria-label="Go to section: Origin"><span
+                    class="dot-label">ORIGIN</span></button>
         </div>
         <div class="current-section-info">
             <span class="section-number">01</span>
@@ -47,178 +78,180 @@
     </div>
 
     <!-- Flowing Viewport Background -->
-    <div class="flowing-viewport-bg"></div>
+    <div class="flowing-viewport-bg" aria-hidden="true"></div>
 
     <!-- Persistent Flowing Logo -->
-    <div class="flowing-logo-container">
+    <div class="flowing-logo-container" aria-hidden="true">
         <div class="flowing-logo"><span class="dis">dis</span><span class="invented">invented</span></div>
     </div>
 
-    <!-- Section 1: Today - Digital Screen -->
-    <section class="section section-1" data-section="1">
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">TODAY</p>
-            <h2 class="section-title-main">Digital Screen</h2>
-            <p class="section-description">Touch. Swipe. Infinite scroll. <br>Where reality bends to pixels and
-                algorithms.</p>
-        </div>
-        </div>
-        <div class="scroll-hint">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-            </svg>
-        </div>
-    </section>
-
-    <!-- Section 2: 2010s - Computer Monitor -->
-    <section class="section section-2" data-section="2">
-        <div class="device-container monitor-container">
-            <div class="monitor device">
-                <div class="device-screen"></div>
-                <div class="monitor-brand">APPLE</div>
-                <div class="monitor-power-led"></div>
-                <div class="monitor-stand">
-                    <div class="stand-connector"></div>
-                </div>
-                <div class="monitor-base">
-                    <div class="base-logo"></div>
-                </div>
+    <main id="main-content">
+        <!-- Section 1: Today - Digital Screen -->
+        <section class="section section-1" data-section="1" aria-label="Today: Digital Screen">
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">TODAY</p>
+                <h2 class="section-title-main">Digital Screen</h2>
+                <p class="section-description">Touch. Swipe. Infinite scroll. <br>Where reality bends to pixels and
+                    algorithms.</p>
             </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">2010s</p>
-            <h2 class="section-title-main">The Desktop</h2>
-            <p class="section-description">Retina displays. 4K resolution. LED backlighting. <br>When sharper meant
-                better.</p>
-        </div>
-    </section>
+            <button type="button" class="scroll-hint" aria-label="Scroll to next section">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+            </button>
+        </section>
 
-    <!-- Section 3: 2000s - LCD Television -->
-    <section class="section section-3" data-section="3">
-        <div class="device-container lcd-container">
-            <div class="lcd-tv device">
-                <div class="device-screen"></div>
-                <div class="lcd-brand">SAMSUNG</div>
-                <div class="lcd-sensor"></div>
-                <div class="lcd-power-button"></div>
-            </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">2000s</p>
-            <h2 class="section-title-main">The Flat Screen</h2>
-            <p class="section-description">Plasma dreams. LCD reality. Wall-mounted status. <br>We said goodbye to
-                depth.</p>
-        </div>
-    </section>
-
-    <!-- Section 4: 1980s - Color CRT TV -->
-    <section class="section section-4" data-section="4">
-        <div class="device-container crt-container">
-            <div class="crt-tv device">
-                <div class="device-screen crt-screen"></div>
-                <div class="crt-brand">SONY</div>
-                <div class="crt-controls">
-                    <div class="crt-dial volume">
-                        <div class="dial-notch"></div>
-                        <div class="dial-label">VOL</div>
+        <!-- Section 2: 2010s - Computer Monitor -->
+        <section class="section section-2" data-section="2" aria-label="2010s: The Desktop">
+            <div class="device-container monitor-container">
+                <div class="monitor device">
+                    <div class="device-screen"></div>
+                    <div class="monitor-brand">APPLE</div>
+                    <div class="monitor-power-led"></div>
+                    <div class="monitor-stand">
+                        <div class="stand-connector"></div>
                     </div>
-                    <div class="crt-dial channel">
-                        <div class="dial-notch"></div>
-                        <div class="dial-label">CH</div>
-                    </div>
-                    <div class="crt-buttons">
-                        <div class="crt-button"></div>
-                        <div class="crt-button"></div>
-                        <div class="crt-button"></div>
-                    </div>
-                </div>
-                <div class="crt-speaker-grill"></div>
-            </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">1980s</p>
-            <h2 class="section-title-main">The Color Box</h2>
-            <p class="section-description">Cathode rays. Scan lines. Saturday morning cartoons. <br>When TV was
-                furniture.</p>
-        </div>
-    </section>
-
-    <!-- Section 5: 1950s - Black & White TV -->
-    <section class="section section-5" data-section="5">
-        <div class="device-container bw-container">
-            <div class="bw-tv device">
-                <div class="bw-antenna">
-                    <div class="antenna-left"></div>
-                    <div class="antenna-right"></div>
-                </div>
-                <div class="device-screen bw-screen"></div>
-                <div class="bw-brand">RCA</div>
-                <div class="bw-dial-panel">
-                    <div class="bw-dial large">
-                        <div class="dial-notch"></div>
-                    </div>
-                    <div class="bw-dial small">
-                        <div class="dial-notch"></div>
+                    <div class="monitor-base">
+                        <div class="base-logo"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">1950s</p>
-            <h2 class="section-title-main">The Living Room</h2>
-            <p class="section-description">Rabbit ears. Static snow. Three channels. <br>The future arrived in
-                monochrome.</p>
-        </div>
-    </section>
-
-    <!-- Section 6: 1920s - Movie Theater -->
-    <section class="section section-6" data-section="6">
-        <div class="device-container theater-container">
-            <div class="theater device">
-                <div class="theater-curtain-left"></div>
-                <div class="theater-curtain-right"></div>
-                <div class="device-screen theater-screen"></div>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">2010s</p>
+                <h2 class="section-title-main">The Desktop</h2>
+                <p class="section-description">Retina displays. 4K resolution. LED backlighting. <br>When sharper meant
+                    better.</p>
             </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">1920s</p>
-            <h2 class="section-title-main">The Picture Show</h2>
-            <p class="section-description">Silent films. Piano scores. Collective wonder. <br>When dreams moved on
-                silver screens.</p>
-        </div>
-    </section>
+        </section>
 
-    <!-- Section 7: 1880s - Photograph -->
-    <section class="section section-7" data-section="7">
-        <div class="device-container frame-container">
-            <div class="photo-frame device">
-                <div class="device-screen photo-screen"></div>
+        <!-- Section 3: 2000s - LCD Television -->
+        <section class="section section-3" data-section="3" aria-label="2000s: The Flat Screen">
+            <div class="device-container lcd-container">
+                <div class="lcd-tv device">
+                    <div class="device-screen"></div>
+                    <div class="lcd-brand">SAMSUNG</div>
+                    <div class="lcd-sensor"></div>
+                    <div class="lcd-power-button"></div>
+                </div>
             </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">1880s</p>
-            <h2 class="section-title-main">The Photograph</h2>
-            <p class="section-description">Daguerreotype. Sepia. Stillness. <br>Light captured, time frozen forever.</p>
-        </div>
-    </section>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">2000s</p>
+                <h2 class="section-title-main">The Flat Screen</h2>
+                <p class="section-description">Plasma dreams. LCD reality. Wall-mounted status. <br>We said goodbye to
+                    depth.</p>
+            </div>
+        </section>
 
-    <!-- Section 8: Cave Drawing -->
-    <section class="section section-8" data-section="8">
-        <div class="device-container cave-container">
-            <div class="cave-rock device">
-                <div class="device-screen rock-surface"></div>
+        <!-- Section 4: 1980s - Color CRT TV -->
+        <section class="section section-4" data-section="4" aria-label="1980s: The Color Box">
+            <div class="device-container crt-container">
+                <div class="crt-tv device">
+                    <div class="device-screen crt-screen"></div>
+                    <div class="crt-brand">SONY</div>
+                    <div class="crt-controls">
+                        <div class="crt-dial volume">
+                            <div class="dial-notch"></div>
+                            <div class="dial-label">VOL</div>
+                        </div>
+                        <div class="crt-dial channel">
+                            <div class="dial-notch"></div>
+                            <div class="dial-label">CH</div>
+                        </div>
+                        <div class="crt-buttons">
+                            <div class="crt-button"></div>
+                            <div class="crt-button"></div>
+                            <div class="crt-button"></div>
+                        </div>
+                    </div>
+                    <div class="crt-speaker-grill"></div>
+                </div>
             </div>
-        </div>
-        <div class="section-content-wrapper">
-            <p class="section-subtitle">The Origin</p>
-            <h2 class="section-title-main">
-                <span class="static-logo"><span class="dis">dis</span><span class="invented">invented</span></span>
-            </h2>
-            <p class="section-description">Stone. Hands. Stories. <br>After all, it's not the tool, it's the team.</p>
-            <a href="mailto:hello@disinvented.com" class="cta-button">Let's Create Something Raw</a>
-        </div>
-    </section>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">1980s</p>
+                <h2 class="section-title-main">The Color Box</h2>
+                <p class="section-description">Cathode rays. Scan lines. Saturday morning cartoons. <br>When TV was
+                    furniture.</p>
+            </div>
+        </section>
+
+        <!-- Section 5: 1950s - Black & White TV -->
+        <section class="section section-5" data-section="5" aria-label="1950s: The Living Room">
+            <div class="device-container bw-container">
+                <div class="bw-tv device">
+                    <div class="bw-antenna">
+                        <div class="antenna-left"></div>
+                        <div class="antenna-right"></div>
+                    </div>
+                    <div class="device-screen bw-screen"></div>
+                    <div class="bw-brand">RCA</div>
+                    <div class="bw-dial-panel">
+                        <div class="bw-dial large">
+                            <div class="dial-notch"></div>
+                        </div>
+                        <div class="bw-dial small">
+                            <div class="dial-notch"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">1950s</p>
+                <h2 class="section-title-main">The Living Room</h2>
+                <p class="section-description">Rabbit ears. Static snow. Three channels. <br>The future arrived in
+                    monochrome.</p>
+            </div>
+        </section>
+
+        <!-- Section 6: 1920s - Movie Theater -->
+        <section class="section section-6" data-section="6" aria-label="1920s: The Picture Show">
+            <div class="device-container theater-container">
+                <div class="theater device">
+                    <div class="theater-curtain-left"></div>
+                    <div class="theater-curtain-right"></div>
+                    <div class="device-screen theater-screen"></div>
+                </div>
+            </div>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">1920s</p>
+                <h2 class="section-title-main">The Picture Show</h2>
+                <p class="section-description">Silent films. Piano scores. Collective wonder. <br>When dreams moved on
+                    silver screens.</p>
+            </div>
+        </section>
+
+        <!-- Section 7: 1880s - Photograph -->
+        <section class="section section-7" data-section="7" aria-label="1880s: The Photograph">
+            <div class="device-container frame-container">
+                <div class="photo-frame device">
+                    <div class="device-screen photo-screen"></div>
+                </div>
+            </div>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">1880s</p>
+                <h2 class="section-title-main">The Photograph</h2>
+                <p class="section-description">Daguerreotype. Sepia. Stillness. <br>Light captured, time frozen forever.</p>
+            </div>
+        </section>
+
+        <!-- Section 8: Cave Drawing -->
+        <section class="section section-8" data-section="8" aria-label="The Origin">
+            <div class="device-container cave-container">
+                <div class="cave-rock device">
+                    <div class="device-screen rock-surface"></div>
+                </div>
+            </div>
+            <div class="section-content-wrapper">
+                <p class="section-subtitle">The Origin</p>
+                <h2 class="section-title-main">
+                    <span class="static-logo"><span class="dis">dis</span><span class="invented">invented</span></span>
+                </h2>
+                <p class="section-description">Stone. Hands. Stories. <br>After all, it's not the tool, it's the team.</p>
+                <a href="mailto:hello@disinvented.com" class="cta-button">Let's Create Something Raw</a>
+                <p class="contact-fallback">Prefer to copy? <a href="mailto:hello@disinvented.com">hello@disinvented.com</a></p>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

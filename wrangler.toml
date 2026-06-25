@@ -1,0 +1,6 @@
+name = "disinvented"
+compatibility_date = "2026-06-25"
+pages_build_output_dir = "."
+
+[vars]
+TESLA_API_BASE_URL = "https://fleet-api.prd.na.vn.cloud.tesla.com"

@@ -1,97 +1,63 @@
-// State and DOM elements
-let isScrolling = false;
-let currentSection = 0;
-let wheelDelta = 0;
-let wheelTimeout = null;
-let touchStartY = 0;
-let touchEndY = 0;
+// Disinvented scroll-snap enhancement script.
+// Runs on every page but only activates index-specific behavior when .section elements exist.
 
+(function () {
 const sections = document.querySelectorAll('.section');
+
+// If there are no full-screen sections, this page doesn't need the scroll-snap enhancements.
+if (sections.length === 0) {
+    return;
+}
+
+let currentSection = 0;
 const totalSections = sections.length;
+
 const indicatorBar = document.querySelector('.indicator-bar');
 const flowingLogoContainer = document.querySelector('.flowing-logo-container');
 const flowingLogo = document.querySelector('.flowing-logo');
 const flowingViewportBg = document.querySelector('.flowing-viewport-bg');
 const dots = document.querySelectorAll('.dot');
 const sectionNumber = document.querySelector('.section-number');
-const disSpan = flowingLogo?.querySelector('.dis');
-const inventedSpan = flowingLogo?.querySelector('.invented');
+const sectionTotal = document.querySelector('.section-total');
+const scrollHint = document.querySelector('.scroll-hint');
 
-const WHEEL_THRESHOLD = 100;
-const SWIPE_THRESHOLD = 50;
-const SCROLL_COOLDOWN = 800;
-const UPDATE_INTERVAL = 50;
+
+// Prefer reduced motion disables the fancy continuous effects.
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Initialize section counter total from the actual DOM count.
+if (sectionTotal) {
+    sectionTotal.textContent = String(totalSections).padStart(2, '0');
+}
 
 // Update scroll indicator and UI
 function updateScrollIndicator() {
-    indicatorBar.style.width = `${((currentSection + 1) / totalSections) * 100}%`;
-    dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSection));
-    if (sectionNumber) sectionNumber.textContent = String(currentSection + 1).padStart(2, '0');
+    if (indicatorBar) {
+        indicatorBar.style.width = `${((currentSection + 1) / totalSections) * 100}%`;
+    }
+    dots.forEach((dot, index) => {
+        const isActive = index === currentSection;
+        dot.classList.toggle('active', isActive);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+    });
+    if (sectionNumber) {
+        sectionNumber.textContent = String(currentSection + 1).padStart(2, '0');
+    }
 }
 
 // Scroll to section
-function scrollToSection(index) {
+function scrollToSection(index, behavior = null) {
     if (index < 0 || index >= totalSections) return;
     currentSection = index;
-    sections[currentSection].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const scrollBehavior = behavior || (prefersReducedMotion ? 'auto' : 'smooth');
+    sections[currentSection].scrollIntoView({ behavior: scrollBehavior, block: 'start' });
     sections.forEach((section, i) => section.classList.toggle('active', i === currentSection));
     updateScrollIndicator();
 }
 
-// Wheel event handler with accumulation
-function handleWheel(e) {
-    e.preventDefault();
-    if (isScrolling) return;
-
-    wheelDelta += e.deltaY;
-    clearTimeout(wheelTimeout);
-
-    wheelTimeout = setTimeout(() => {
-        if (Math.abs(wheelDelta) > WHEEL_THRESHOLD) {
-            isScrolling = true;
-            const direction = wheelDelta > 0 ? 1 : -1;
-            const nextSection = currentSection + direction;
-            if (nextSection >= 0 && nextSection < totalSections) {
-                scrollToSection(nextSection);
-            }
-            wheelDelta = 0;
-            setTimeout(() => isScrolling = false, SCROLL_COOLDOWN);
-        }
-    }, UPDATE_INTERVAL);
-}
-
-// Touch event handlers
-function handleTouchStart(e) {
-    touchStartY = e.touches[0].clientY;
-}
-
-function handleTouchEnd(e) {
-    if (isScrolling) return;
-
-    touchEndY = e.changedTouches[0].clientY;
-    const diff = touchStartY - touchEndY;
-
-    if (Math.abs(diff) > SWIPE_THRESHOLD) {
-        isScrolling = true;
-        const direction = diff > 0 ? 1 : -1;
-        const nextSection = currentSection + direction;
-        if (nextSection >= 0 && nextSection < totalSections) {
-            scrollToSection(nextSection);
-        }
-        setTimeout(() => isScrolling = false, 1000);
-    }
-}
-
-// Keyboard navigation
+// Keyboard navigation (only Home/End; arrow/page/space are handled natively by scroll-snap)
 function handleKeydown(e) {
-    if (isScrolling) return;
-
     const keyActions = {
-        'ArrowDown': () => currentSection < totalSections - 1 && scrollToSection(currentSection + 1),
-        'PageDown': () => currentSection < totalSections - 1 && scrollToSection(currentSection + 1),
-        ' ': () => currentSection < totalSections - 1 && scrollToSection(currentSection + 1),
-        'ArrowUp': () => currentSection > 0 && scrollToSection(currentSection - 1),
-        'PageUp': () => currentSection > 0 && scrollToSection(currentSection - 1),
         'Home': () => scrollToSection(0),
         'End': () => scrollToSection(totalSections - 1)
     };
@@ -116,32 +82,35 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(section => observer.observe(section));
 
+// Read bezel geometry from the rendered device screen so CSS remains the single source of truth.
+function getBezelGeometry(deviceScreen) {
+    const computed = window.getComputedStyle(deviceScreen);
+    const borderWidth = parseFloat(computed.borderWidth) || 0;
+    const borderRadius = computed.borderRadius || '0px';
+    return { borderWidth, borderRadius };
+}
+
 // Continuous logo and viewport background flow
 function updateFlowingLogo() {
-    if (!flowingLogoContainer || !flowingViewportBg) return;
+    if (!flowingLogoContainer || !flowingViewportBg || !flowingLogo) return;
 
-    // Get current scroll position
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const viewportHeight = window.innerHeight;
 
-    // Section 1: Full screen
     const section1 = document.querySelector('.section-1');
+    if (!section1) return;
     const section1Top = section1.offsetTop;
     const section1Bottom = section1Top + section1.offsetHeight;
 
-    // Calculate which section we're in
     let targetDevice = null;
     let progress = 0;
 
-    // Find target device based on scroll position
     const deviceContainers = document.querySelectorAll('.device-container');
     deviceContainers.forEach(container => {
         const section = container.closest('.section');
+        if (!section) return;
         const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
         const sectionMiddle = sectionTop + (section.offsetHeight / 2);
-
-        // Check if we're in or near this section
         const distanceToMiddle = Math.abs(scrollTop + (viewportHeight / 2) - sectionMiddle);
 
         if (distanceToMiddle < viewportHeight * 0.6) {
@@ -153,85 +122,41 @@ function updateFlowingLogo() {
         }
     });
 
-    // In section 1 - full size overlapping bottom
     if (scrollTop < section1Bottom - viewportHeight / 2) {
         const section1Progress = scrollTop / (section1Bottom - viewportHeight / 2);
-        const scale = 1 - (section1Progress * 0.7); // Scale from 1 to 0.3
-
-        // Calculate opacity: Start at 0.1, fade to 1 as we scroll down
-        // We want it to be fully opaque by the time it is about to enter the device (end of section 1)
+        const scale = 1 - (section1Progress * 0.7);
         const opacity = 0.1 + (section1Progress * 0.9);
 
-        // Keep at bottom 65% position on first page
         flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
         flowingLogoContainer.style.top = '65%';
         flowingLogoContainer.style.left = '50%';
         flowingLogoContainer.style.opacity = Math.min(1, Math.max(0.1, opacity));
 
-        // Viewport background follows logo
         flowingViewportBg.style.transform = 'translate(0, 0) scale(1)';
         flowingViewportBg.style.opacity = '1';
         flowingViewportBg.style.clipPath = 'none';
         flowingViewportBg.style.borderRadius = '0';
-
-        // Moving toward a device
     } else if (targetDevice) {
         const rect = targetDevice.getBoundingClientRect();
+        const { borderWidth, borderRadius } = getBezelGeometry(targetDevice);
 
-        // Get border/bezel width from device type first
-        const deviceContainer = targetDevice.closest('.device-container');
-        let bezelPadding = 0;
-        let borderRadius = '0px';
-
-        if (deviceContainer) {
-            if (deviceContainer.classList.contains('monitor-container')) {
-                bezelPadding = 20; // 20px border
-                borderRadius = '8px';
-            } else if (deviceContainer.classList.contains('theater-container')) {
-                bezelPadding = 30; // 30px border
-                borderRadius = '0px';
-            } else if (deviceContainer.classList.contains('lcd-container')) {
-                bezelPadding = 35; // 35px border
-                borderRadius = '12px';
-            } else if (deviceContainer.classList.contains('crt-container')) {
-                bezelPadding = 50; // 50px border
-                borderRadius = '30px';
-            } else if (deviceContainer.classList.contains('bw-container')) {
-                bezelPadding = 60; // 60px border
-                borderRadius = '40px';
-            } else if (deviceContainer.classList.contains('frame-container')) {
-                bezelPadding = 40; // 40px border
-                borderRadius = '4px';
-            } else if (deviceContainer.classList.contains('cave-container')) {
-                bezelPadding = 0; // Full cave wall, no bezel
-                borderRadius = '0';
-            }
-        }
-
-        // Calculate inner dimensions (accounting for bezel on both sides)
-        const innerWidth = rect.width - (bezelPadding * 2);
-        const innerHeight = rect.height - (bezelPadding * 2);
+        const innerWidth = rect.width - (borderWidth * 2);
+        const innerHeight = rect.height - (borderWidth * 2);
         const innerCenterX = rect.left + rect.width / 2;
         const innerCenterY = rect.top + rect.height / 2;
 
-        // Calculate logo scale to fit inside device (accounting for bezel)
         const logoWidth = flowingLogo.offsetWidth;
         const targetScale = Math.min((innerWidth * 0.65) / logoWidth, 0.3);
 
-        // Position logo inside device screen
         flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
         flowingLogoContainer.style.top = `${innerCenterY}px`;
         flowingLogoContainer.style.left = `${innerCenterX}px`;
         flowingLogoContainer.style.opacity = progress;
 
-        // Apply device-specific logo styling via CSS classes
-        applyDeviceSpecificLogoStyling(deviceContainer);
+        applyDeviceSpecificLogoStyling(targetDevice.closest('.device-container'));
 
-        // Morph viewport background to fill device screen completely (inside bezel)
         const deviceScaleX = innerWidth / window.innerWidth;
         const deviceScaleY = innerHeight / window.innerHeight;
-
-        // Position background to align with device screen center
         const translateX = innerCenterX - window.innerWidth / 2;
         const translateY = innerCenterY - window.innerHeight / 2;
 
@@ -239,18 +164,13 @@ function updateFlowingLogo() {
         flowingViewportBg.style.transformOrigin = 'center center';
         flowingViewportBg.style.opacity = Math.min(1, progress * 1.2);
         flowingViewportBg.style.borderRadius = borderRadius;
-
     } else {
-        // Check if we are in the last section near the "dis invented" title
         const lastSection = document.querySelector('.section-8');
-        // We target the specific span to get the exact text dimensions for perfect overlay
         const originTitle = lastSection?.querySelector('.static-logo');
-
         let headerTarget = null;
 
         if (originTitle) {
             const rect = originTitle.getBoundingClientRect();
-            // Check if title is roughly in view
             if (rect.top < viewportHeight && rect.bottom > 0) {
                 const distanceToCenter = Math.abs((rect.top + rect.height / 2) - (viewportHeight / 2));
                 if (distanceToCenter < viewportHeight * 0.4) {
@@ -261,14 +181,9 @@ function updateFlowingLogo() {
 
         if (headerTarget) {
             const rect = headerTarget.getBoundingClientRect();
-            // Force center X to be viewport center for better aesthetics
             const centerX = window.innerWidth / 2;
             const centerY = rect.top + rect.height / 2;
-
-            // Calculate scale to match the title width
             const logoWidth = flowingLogo.offsetWidth;
-            // The title text "dis invented" is roughly the width we want.
-            // Since font-family might be slightly different, matching width is best approximation.
             const targetScale = (rect.width * 1.0) / logoWidth;
 
             flowingLogoContainer.style.transform = `translate(-50%, -50%) scale(${targetScale})`;
@@ -276,29 +191,17 @@ function updateFlowingLogo() {
             flowingLogoContainer.style.left = `${centerX}px`;
             flowingLogoContainer.style.opacity = '1';
 
-            // Make the static text transparent so we don't see double
-            // The flowing logo BECOMES the title
-            headerTarget.style.opacity = '0';
-
-            // Apply origin styling
+            headerTarget.setAttribute('aria-hidden', 'true');
             flowingLogoContainer.className = 'flowing-logo-container connected-origin';
-
-            // Hide viewport background
             flowingViewportBg.style.opacity = '0';
-
         } else {
-            // Default fallback
             flowingLogoContainer.className = 'flowing-logo-container';
             flowingLogoContainer.style.opacity = '0.3';
             flowingLogoContainer.style.top = '50%';
             flowingLogoContainer.style.left = '50%';
-            // Reset transforms if needed or let CSS transition handle it, 
-            // but we need to ensure scale is reset to something reasonable if we want it to drift
-            // Actually, best to just let it drift near center if no device
             flowingViewportBg.style.opacity = '0.3';
 
-            // Reset title opacity if we leave it
-            if (originTitle) originTitle.style.opacity = '1';
+            if (originTitle) originTitle.removeAttribute('aria-hidden');
         }
     }
 }
@@ -307,7 +210,6 @@ function updateFlowingLogo() {
 function applyDeviceSpecificLogoStyling(deviceContainer) {
     if (!deviceContainer) return;
 
-    // reset base class
     flowingLogoContainer.classList.remove('connected-bw', 'connected-crt', 'connected-frame', 'connected-cave', 'connected-theater');
 
     if (deviceContainer.classList.contains('bw-container')) {
@@ -329,7 +231,9 @@ function updateDeviceVisibility() {
     const deviceContainers = document.querySelectorAll('.device-container');
 
     deviceContainers.forEach(container => {
-        const sectionRect = container.closest('.section').getBoundingClientRect();
+        const section = container.closest('.section');
+        if (!section) return;
+        const sectionRect = section.getBoundingClientRect();
         const visibilityProgress = Math.max(0, Math.min(1, 1 - (Math.abs(sectionRect.top) / viewportHeight)));
 
         container.style.transform = visibilityProgress > 0.2 ? `scale(${0.85 + visibilityProgress * 0.15})` : 'scale(0.85)';
@@ -338,7 +242,6 @@ function updateDeviceVisibility() {
 }
 
 // Scroll Hint Logic
-const scrollHint = document.querySelector('.scroll-hint');
 if (scrollHint) {
     scrollHint.addEventListener('click', () => scrollToSection(1));
 }
@@ -361,7 +264,7 @@ function updateAllAnimations() {
     updateScrollHint();
 }
 
-// Optimized Animation Loop
+// Optimized animation loop
 let ticking = false;
 
 function onScroll() {
@@ -375,9 +278,6 @@ function onScroll() {
 }
 
 // Event listeners
-window.addEventListener('wheel', handleWheel, { passive: false });
-window.addEventListener('touchstart', handleTouchStart, { passive: true });
-window.addEventListener('touchend', handleTouchEnd, { passive: true });
 window.addEventListener('keydown', handleKeydown);
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll, { passive: true });
@@ -387,6 +287,7 @@ dots.forEach(dot => {
     dot.addEventListener('click', () => scrollToSection(parseInt(dot.dataset.section)));
 });
 
-// Initialize
-scrollToSection(0);
+// Initialize without animating on load.
+scrollToSection(0, 'auto');
 updateAllAnimations();
+})();

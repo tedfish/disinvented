@@ -4,7 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signal Us - disinvented</title>
+    <meta name="description"
+        content="Contact disinvented. Analog signals welcome. No bots. Just us. Send a frequency to open a channel.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Contact - disinvented">
+    <meta property="og:description"
+        content="Contact disinvented. Analog signals welcome. No bots. Just us. Send a frequency to open a channel.">
+    <meta property="og:image" content="https://disinvented.com/screen_cave.png">
+    <meta property="og:url" content="https://disinvented.com/contact.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contact - disinvented">
+    <meta name="twitter:description"
+        content="Contact disinvented. Analog signals welcome. No bots. Just us. Send a frequency to open a channel.">
+    <meta name="twitter:image" content="https://disinvented.com/screen_cave.png">
+
+    <title>Contact - disinvented</title>
+    <link rel="canonical" href="https://disinvented.com/contact.html">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,48 +35,70 @@
 </head>
 
 <body>
-    <nav class="nav-container">
-        <div class="nav-logo"></div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="nav-container" aria-label="Primary">
+        <div class="nav-logo"><a href="index.html" aria-label="disinvented home">disinvented</a></div>
         <div class="nav-links">
             <a href="index.html" class="nav-link">Index</a>
             <a href="work.html" class="nav-link">Work</a>
             <a href="about.html" class="nav-link">About</a>
-            <a href="contact.html" class="nav-link active">Contact</a>
+            <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
         </div>
     </nav>
 
-    <div class="standard-page">
-        <div class="standard-content">
-            <header class="page-header">
-                <h1 class="page-title">Signal Us</h1>
-                <p class="page-subtitle">Analog signals welcome. No bots. Just us. Send a frequency to open a channel.
-                </p>
-            </header>
+    <main id="main-content">
+        <div class="standard-page">
+            <div class="standard-content">
+                <header class="page-header">
+                    <h1 class="page-title">Signal Us</h1>
+                    <p class="page-subtitle">Analog signals welcome. No bots. Just us. Send a frequency to open a channel.
+                    </p>
+                </header>
 
-            <form class="contact-form" action="#" method="POST">
-                <div class="form-group">
-                    <label class="form-label">Designation (Name)</label>
-                    <input type="text" class="form-input" required placeholder="e.g. John Doe">
-                </div>
+                <form class="contact-form" action="#" method="POST" id="contact-form">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Designation (Name)</label>
+                        <input type="text" id="name" name="name" class="form-input" required
+                            placeholder="e.g. John Doe" autocomplete="name">
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">Frequency (Email)</label>
-                    <input type="email" class="form-input" required placeholder="e.g. john@example.com">
-                </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Frequency (Email)</label>
+                        <input type="email" id="email" name="email" class="form-input" required
+                            placeholder="e.g. john@example.com" autocomplete="email">
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">Transmission</label>
-                    <textarea class="form-textarea" required placeholder="Type your message..."></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">Transmission</label>
+                        <textarea id="message" name="message" class="form-textarea" required
+                            placeholder="Type your message..."></textarea>
+                    </div>
 
-                <button type="submit" class="submit-btn">Broadcast</button>
-            </form>
+                    <button type="submit" class="submit-btn">Broadcast</button>
+                    <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+                    <p class="contact-fallback">Or email us directly at <a
+                            href="mailto:hello@disinvented.com">hello@disinvented.com</a></p>
+                </form>
 
-            <footer class="simple-footer">
-                © DISINVENTED
-            </footer>
+                <footer class="simple-footer">
+                    © DISINVENTED
+                </footer>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('contact-form');
+        const status = document.getElementById('form-status');
+        if (form && status) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                status.textContent = 'This form is not connected to a backend yet. Please email hello@disinvented.com directly.';
+                status.classList.add('visible');
+            });
+        }
+    </script>
 </body>
 
 </html>

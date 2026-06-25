@@ -4,7 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selected Works - disinvented</title>
+    <meta name="description"
+        content="Selected works by disinvented. Experiences that strip away the noise and build raw utility and beauty.">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Work - disinvented">
+    <meta property="og:description"
+        content="Selected works by disinvented. Experiences that strip away the noise and build raw utility and beauty.">
+    <meta property="og:image" content="https://disinvented.com/screen_cave.png">
+    <meta property="og:url" content="https://disinvented.com/work.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Work - disinvented">
+    <meta name="twitter:description"
+        content="Selected works by disinvented. Experiences that strip away the noise and build raw utility and beauty.">
+    <meta name="twitter:image" content="https://disinvented.com/screen_cave.png">
+
+    <title>Work - disinvented</title>
+    <link rel="canonical" href="https://disinvented.com/work.html">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,58 +35,69 @@
 </head>
 
 <body>
-    <nav class="nav-container">
-        <div class="nav-logo"></div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="nav-container" aria-label="Primary">
+        <div class="nav-logo"><a href="index.html" aria-label="disinvented home">disinvented</a></div>
         <div class="nav-links">
             <a href="index.html" class="nav-link">Index</a>
-            <a href="work.html" class="nav-link active">Work</a>
+            <a href="work.html" class="nav-link active" aria-current="page">Work</a>
             <a href="about.html" class="nav-link">About</a>
             <a href="contact.html" class="nav-link">Contact</a>
         </div>
     </nav>
 
-    <div class="standard-page">
-        <div class="standard-content">
-            <header class="page-header">
-                <h1 class="page-title">Selected Works</h1>
-                <p class="page-subtitle">We strip away the noise. We build experiences that matter. No fluff. No dark
-                    patterns. Just raw utility and beauty.</p>
-            </header>
+    <main id="main-content">
+        <div class="standard-page">
+            <div class="standard-content">
+                <header class="page-header">
+                    <h1 class="page-title">Selected Works</h1>
+                    <p class="page-subtitle">We strip away the noise. We build experiences that matter. No fluff. No dark
+                        patterns. Just raw utility and beauty.</p>
+                </header>
 
-            <div class="content-grid">
-                <div class="grid-item">
-                    <span class="item-year">2024</span>
-                    <h3 class="item-title">Analog Soul</h3>
-                    <p class="item-desc">A digital music player that degrades audio quality over time, simulating the
-                        wear of physical vinyl.</p>
+                <div class="content-grid">
+                    <div class="grid-item">
+                        <span class="item-year">2026</span>
+                        <h3 class="item-title">Road Reliquary</h3>
+                        <p class="item-desc">A Tesla-powered trip relic generator that turns route, charge, weather, and cabin telemetry into a single cinematic artifact. One drive. One object. Part travel diary, part battery elegy, part machine memory.</p>
+                        <a href="road-reliquary.html" class="item-link">Open prototype</a>
+                    </div>
+
+                    <div class="grid-item">
+                        <span class="item-year">2024</span>
+                        <h3 class="item-title">Analog Soul</h3>
+                        <p class="item-desc">A digital music player that degrades audio quality over time, simulating the
+                            wear of physical vinyl.</p>
+                    </div>
+
+                    <div class="grid-item">
+                        <span class="item-year">2023</span>
+                        <h3 class="item-title">Monolith</h3>
+                        <p class="item-desc">A social network with a 24-hour post retention policy. No archives. No history.
+                            Just the now.</p>
+                    </div>
+
+                    <div class="grid-item">
+                        <span class="item-year">2023</span>
+                        <h3 class="item-title">Paper Trail</h3>
+                        <p class="item-desc">Bank statements re-imagined as narrative stories rather than spreadsheets.</p>
+                    </div>
+
+                    <div class="grid-item">
+                        <span class="item-year">2022</span>
+                        <h3 class="item-title">Silence</h3>
+                        <p class="item-desc">A productivity tool that blocks all internet traffic except for white-listed
+                            'quiet' zones.</p>
+                    </div>
                 </div>
 
-                <div class="grid-item">
-                    <span class="item-year">2023</span>
-                    <h3 class="item-title">Monolith</h3>
-                    <p class="item-desc">A social network with a 24-hour post retention policy. No archives. No history.
-                        Just the now.</p>
-                </div>
-
-                <div class="grid-item">
-                    <span class="item-year">2023</span>
-                    <h3 class="item-title">Paper Trail</h3>
-                    <p class="item-desc">Bank statements re-imagined as narrative stories rather than spreadsheets.</p>
-                </div>
-
-                <div class="grid-item">
-                    <span class="item-year">2022</span>
-                    <h3 class="item-title">Silence</h3>
-                    <p class="item-desc">A productivity tool that blocks all internet traffic except for white-listed
-                        'quiet' zones.</p>
-                </div>
+                <footer class="simple-footer">
+                    © DISINVENTED
+                </footer>
             </div>
-
-            <footer class="simple-footer">
-                © DISINVENTED
-            </footer>
         </div>
-    </div>
+    </main>
 </body>
 
 </html>
